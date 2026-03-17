@@ -1,6 +1,6 @@
 import { HORIZONTAL, Ship, VERTICAL } from "./Ship.js";
 
-const BOARD_SIZE = 8;
+export const BOARD_SIZE = 8;
 
 function createCell(ship = null, state = null, occupied = false) {
   return {
@@ -15,6 +15,10 @@ export class Gameboard {
     this.board = this.#buildBoard();
     this.ships = this.#buildShips();
     this.states = { sunkenCount: 0, hits: 0, misses: 0 };
+  }
+
+  get() {
+    return this.board;
   }
 
   placeShip(shipIndex, row, col) {
