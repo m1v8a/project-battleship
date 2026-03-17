@@ -18,7 +18,7 @@ export class Gameboard {
 
   placeShip(shipIndex, row, col) {
     // check if the positon is valid
-    if (this.isInvalidPos(shipIndex, row, col)) {
+    if (this.#isInvalidPos(shipIndex, row, col)) {
       throw new Error("invalid position, choose another");
     }
     const ship = this.ships[shipIndex];
@@ -28,7 +28,22 @@ export class Gameboard {
     });
   }
 
-  isInvalidPos(shipIndex, row, col) {
+  receiveAttack(row, col) {
+    const cell = this.board[row][col];
+
+    // either "hit" or "miss" or "null"
+    if (cell.state !== null) {
+      throw new Error("Target is already destroyed");
+    }
+    if (cell.ship !== null) {
+      cell.ship.hit(); // should decrease the health of the ship by 1
+      cell.state = "hit";
+    } else {
+      cell.state = "miss";
+    }
+  }
+
+  #isInvalidPos(shipIndex, row, col) {
     const ship = this.ships[shipIndex];
     for (let i = 0; i < ship.length; i++) {
       if (ship.orientation === HORIZONTAL) {
@@ -39,7 +54,7 @@ export class Gameboard {
         }
 
         const cell = this.board[row][c];
-        // the cell on the position where this current ship's part supposed to be is already occupied, will result in 'invalid'
+        // the cell on the position where this current ship's part supposed to be is already occupied
         if (cell.occupied) {
           return true;
         }

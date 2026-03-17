@@ -23,3 +23,17 @@ describe("placeShip()", () => {
     expect(() => board.placeShip(2, 5, 4)).not.toThrow();
   });
 });
+
+describe("receiveAttack()", () => {
+  it("mark the target cell 'hit' when there's ship in it", () => {
+    board.placeShip(0, 4, 4);
+    board.receiveAttack(4, 4);
+    expect(board.board[4][4].state).toBe("hit");
+  });
+
+  it("marks the target cell 'miss' when there's no ship in it", () => {
+    board.placeShip(0, 4, 4);
+    board.receiveAttack(5, 4);
+    expect(board.board[5][4].state).toBe("miss");
+  });
+});
