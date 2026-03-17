@@ -1,5 +1,5 @@
-const HORIZONTAL = "horizontal";
-const VERTICAL = "vertical";
+export const HORIZONTAL = "horizontal";
+export const VERTICAL = "vertical";
 
 function createPart(root) {
   return { root, row: 0, col: 0 };
