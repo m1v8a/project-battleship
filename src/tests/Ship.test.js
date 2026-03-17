@@ -21,3 +21,20 @@ describe("isSunk()", () => {
     expect(ship.isSunk()).toBe(true);
   });
 });
+
+describe("setPos()", () => {
+  it("sets the row and col positions of the ship's parts / horizontal (default)", () => {
+    ship.setPos(4, 4);
+    ship.parts.forEach((p, i) => {
+      expect([p.row, p.col]).toEqual([4, 4 + i]);
+    });
+  });
+
+  it("sets the row and col positions of the ship's parts / vertical", () => {
+    ship.toggleOrientation(); // toggles from horizontal to vertical
+    ship.setPos(4, 4);
+    ship.parts.forEach((p, i) => {
+      expect([p.row, p.col]).toEqual([4 + i, 4]);
+    });
+  });
+});
