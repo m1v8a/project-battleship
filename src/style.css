@@ -1,18 +1,58 @@
 * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 p {
-    line-height: 1.5;
+  line-height: 1.5;
 }
 
 body {
-    background-color: #25343f;
-    color: #eaefef;
+  background-color: #25343f;
+  color: #eaefef;
 }
 
 h1 {
-    font-size: 4rem;
+  font-size: 4rem;
+}
+
+main {
+  margin-top: 3rem;
+}
+
+#game-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+
+  >div {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.score {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+
+  p:first-child {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-right: auto;
+  }
+}
+
+.board {
+  width: 500px;
+  height: 500px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cell {
+  border: 1px solid darkcyan;
 }
