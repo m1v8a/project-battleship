@@ -36,4 +36,38 @@ describe("receiveAttack()", () => {
     board.receiveAttack(5, 4);
     expect(board.board[5][4].state).toBe("miss");
   });
+
+  it("returns an object with the current state of the board", () => {
+    expect(board.receiveAttack(4, 4)).toHaveProperty(["sunkenCount"]);
+    expect(board.receiveAttack(5, 4)).toHaveProperty(["hits"]);
+    expect(board.receiveAttack(6, 4)).toHaveProperty(["misses"]);
+  });
+
+  it("increase hits count when the attack is successfull", () => {
+    board.placeShip(0, 4, 4);
+    board.receiveAttack(4, 4);
+    expect(board.states.hits).toBe(1);
+    expect(board.states.misses).toBe(0);
+  });
+
+  it("increase misses count when the attack is not successfull", () => {
+    board.placeShip(0, 4, 4);
+    board.receiveAttack(5, 4);
+    expect(board.states.hits).toBe(0);
+    expect(board.states.misses).toBe(1);
+  });
+});
+
+describe("allShipSunken()", () => {
+  it("returns true when all of the ships has sunken", () => {
+    for (let i = 0; i < board.ships.length; i++) {
+      const ship = board.ships[i];
+      ship.health = 0;
+    }
+    expect(board.allShipSunken()).toBe(true);
+  });
+
+  it("returns false when all of the ships hasn't sunken yet", () => {
+    expect(board.allShipSunken()).toBe(false);
+  });
 });

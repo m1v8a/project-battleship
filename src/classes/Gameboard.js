@@ -14,6 +14,7 @@ export class Gameboard {
   constructor() {
     this.board = this.#buildBoard();
     this.ships = this.#buildShips();
+    this.states = { sunkenCount: 0, hits: 0, misses: 0 };
   }
 
   placeShip(shipIndex, row, col) {
@@ -37,10 +38,29 @@ export class Gameboard {
     }
     if (cell.ship !== null) {
       cell.ship.hit(); // should decrease the health of the ship by 1
+      this.states.hits += 1;
       cell.state = "hit";
     } else {
       cell.state = "miss";
+      this.states.misses += 1;
     }
+
+    this.states.sunkenCount = this.#getSunkenShipsCount();
+
+    return this.states;
+  }
+
+  #getSunkenShipsCount() {
+    let sunkenCount = 0;
+    this.ships.forEach((ship) => {
+      sunkenCount += ship.isSunk() ? 1 : 0;
+    });
+
+    return sunkenCount;
+  }
+
+  allShipSunken() {
+    return this.#getSunkenShipsCount() === this.ships.length;
   }
 
   #isInvalidPos(shipIndex, row, col) {
