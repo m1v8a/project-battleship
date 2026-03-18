@@ -1,5 +1,6 @@
 export const HORIZONTAL = "horizontal";
 export const VERTICAL = "vertical";
+const minColorRange = 25;
 
 function createPart(root) {
   return { root, row: 0, col: 0 };
@@ -11,6 +12,11 @@ export class Ship {
     this.health = length;
     this.parts = this.#buildParts(length);
     this.orientation = HORIZONTAL;
+    this.color = {
+      red: Math.floor(Math.random() * 255) + minColorRange,
+      green: Math.floor(Math.random() * 255) + minColorRange,
+      blue: Math.floor(Math.random() * 255) + minColorRange,
+    };
   }
 
   hit() {
