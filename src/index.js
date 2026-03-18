@@ -7,7 +7,6 @@ const computerContainer = document.querySelector("#computer-container");
 const playerBoardEl = playerContainer.querySelector(".board");
 const computerBoardEl = computerContainer.querySelector(".board");
 
-console.log(computerBoardEl);
 Controller.init({
   player: new Player("Player"),
   computer: new Player("Computer"),
@@ -15,4 +14,16 @@ Controller.init({
   computerBoardEl: computerBoardEl,
 });
 
-computerBoardEl.addEventListener("click", (e) => {});
+computerBoardEl.addEventListener("click", (e) => {
+  if (e.target.className !== "cell") return;
+  const row = +e.target.dataset.row;
+  const col = +e.target.dataset.col;
+
+  try {
+    const states = Controller.player.attack(Controller.computer, row, col);
+    console.log(states);
+    Controller.updateBoard(Controller.computer, Controller.computerBoardEl);
+  } catch (error) {
+    alert(error.message);
+  }
+});
