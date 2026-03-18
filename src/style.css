@@ -51,6 +51,23 @@ main {
   height: 500px;
   display: flex;
   flex-wrap: wrap;
+
+  position: relative;
+}
+
+.board::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.board[data-blocked="true"]::after {
+  display: unset;
+}
+
+.board[data-blocked="false"]::after {
+  display: none;
 }
 
 .cell {
