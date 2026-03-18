@@ -1,12 +1,18 @@
 import { HORIZONTAL, Ship, VERTICAL } from "./Ship.js";
 
-export const BOARD_SIZE = 8;
+export const BOARD_SIZE = 12;
 
-function createCell(ship = null, state = null, occupied = false) {
+function createCell(
+  ship = null,
+  state = null,
+  occupied = false,
+  hidden = false
+) {
   return {
     ship,
     state,
     occupied,
+    hidden,
   };
 }
 
@@ -21,7 +27,7 @@ export class Gameboard {
     return this.board;
   }
 
-  placeShip(shipIndex, row, col) {
+  placeShip(shipIndex, row, col, hidden) {
     // check if the positon is valid
     if (this.#isInvalidPos(shipIndex, row, col)) {
       throw new Error("invalid position, choose another");
@@ -29,7 +35,7 @@ export class Gameboard {
     const ship = this.ships[shipIndex];
     ship.setPos(row, col);
     ship.parts.forEach((p) => {
-      this.board[p.row][p.col] = createCell(ship, null, true);
+      this.board[p.row][p.col] = createCell(ship, null, true, hidden);
     });
   }
 
