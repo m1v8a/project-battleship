@@ -1,6 +1,5 @@
 import { BOARD_SIZE } from "./Gameboard.js";
 import { Player } from "./Player.js";
-import { HORIZONTAL } from "./Ship.js";
 
 export class Controller {
   static player;
@@ -74,17 +73,22 @@ export class Controller {
 
         if (cell.ship) {
           if (!cell.hidden) {
-            div.style.backgroundColor = "#925524";
+            const r = cell.ship.color.red;
+            const g = cell.ship.color.green;
+            const b = cell.ship.color.blue;
+            div.style.backgroundColor = `rgb(${r},${g},${b})`;
           }
 
           if (cell.state) {
             if (cell.state === "hit") {
+              div.style.borderWidth = "8px";
               div.style.backgroundColor = "#24f255";
             }
           }
         }
         if (cell.state === "miss") {
-          div.style.backgroundColor = "#333";
+          div.style.borderWidth = "8px";
+          div.style.backgroundColor = "#111";
         }
 
         player.boardEl.appendChild(div);

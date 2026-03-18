@@ -59,7 +59,7 @@ main {
   content: "";
   position: absolute;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.0);
 }
 
 .board[data-blocked="true"]::after {
@@ -68,6 +68,14 @@ main {
 
 .board[data-blocked="false"]::after {
   display: none;
+}
+
+.board[data-blocked="false"]::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border: 8px solid #fff;
+  z-index: -1;
 }
 
 .cell {
