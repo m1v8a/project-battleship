@@ -1,18 +1,29 @@
 * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
-p {
-    line-height: 1.5;
+.game-window {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
 }
 
-body {
-    background-color: #25343f;
-    color: #eaefef;
+.scoreboard {
+  display: flex;
+  justify-content: space-between;
 }
 
-h1 {
-    font-size: 4rem;
+.grid {
+  --size: 300px;
+  display: flex;
+  flex-wrap: wrap;
+  width: var(--size);
+  height: var(--size);
+
+}
+
+.cell {
+  border: 1px solid #090040;
 }
