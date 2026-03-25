@@ -1,6 +1,6 @@
 import { HORIZONTAL, Ship } from "./Ship.js";
 
-const BOARD_SIZE = 8;
+export const BOARD_SIZE = 12;
 const SHIPS_LENGTHS = [2, 2, 3, 3, 4, 5];
 
 export class Gameboard {
@@ -22,11 +22,20 @@ export class Gameboard {
     return grid;
   }
 
+  getState() {
+    return this.state;
+  }
+
+  getShips() {
+    return this.ships;
+  }
+
   #generateShips() {
     const ships = [];
-    for (let i = 0; i < SHIPS_LENGTHS; i++) {
+    for (let i = 0; i < SHIPS_LENGTHS.length; i++) {
       ships.push(new Ship(i));
     }
+    return ships;
   }
 
   deploy(ship, x, y) {
