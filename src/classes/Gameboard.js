@@ -80,6 +80,18 @@ export class Gameboard {
     }
   }
 
+  getUndestroyedCells() {
+    const availableCells = [];
+    for (let x = 0; x < this.grid.length; x++) {
+      for (let y = 0; y < this.grid[x].length; y++) {
+        if (!this.grid[x][y].destroyed) {
+          availableCells.push([x, y]);
+        }
+      }
+    }
+    return availableCells;
+  }
+
   #attackHits() {
     this.state.hits += 1;
   }

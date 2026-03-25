@@ -109,3 +109,13 @@ describe("receiveAttack()", () => {
     expect(gb.state.sunkenShips - prevSunken).toBe(1);
   });
 });
+
+describe("getUndestroyedCells()", () => {
+  it("returns an array of undestroyed cells", () => {
+    const ac = gb.getUndestroyedCells();
+    ac.forEach((coor) => {
+      const [x, y] = coor;
+      expect(gb.grid[x][y].destroyed).toBe(false);
+    });
+  });
+});
