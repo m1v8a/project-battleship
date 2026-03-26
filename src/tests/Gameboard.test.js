@@ -1,4 +1,4 @@
-import { Gameboard, Cell } from "../classes/Gameboard.js";
+import { Gameboard, Cell, BOARD_SIZE } from "../classes/Gameboard.js";
 import { Ship } from "../classes/Ship.js";
 
 let gb;
@@ -33,18 +33,25 @@ describe("deploy()", () => {
     expect(gb.grid[4][6].ship).toBeInstanceOf(Ship);
   });
 
-  it("throws an error when placing a ship on an already occupied cell", () => {
+  it("throws an error when deploying a ship on an already occupied cell", () => {
     const ship = new Ship(3);
     const ship1 = new Ship(3);
     gb.deploy(ship, 4, 4);
     expect(() => gb.deploy(ship1, 4, 4)).toThrow();
   });
 
-  it("doesn't throw when placing multiple ships on separate unoccupied cells", () => {
+  it("doesn't throw when deploying multiple ships on separate unoccupied cells", () => {
     const ship = new Ship(3);
     const ship1 = new Ship(3);
     gb.deploy(ship, 4, 4);
     expect(() => gb.deploy(ship1, 5, 5)).not.toThrow();
+  });
+
+  it("throw an error for deploying ships out of bounds", () => {
+    const ship = new Ship(3);
+    expect(() => gb.deploy(ship, BOARD_SIZE - 1, BOARD_SIZE - 1)).toThrow(
+      "Out of bounds"
+    );
   });
 });
 

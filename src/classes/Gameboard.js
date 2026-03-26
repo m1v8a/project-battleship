@@ -33,19 +33,23 @@ export class Gameboard {
   #generateShips() {
     const ships = [];
     for (let i = 0; i < SHIPS_LENGTHS.length; i++) {
-      ships.push(new Ship(i));
+      ships.push(new Ship(SHIPS_LENGTHS[i]));
     }
     return ships;
   }
 
   deploy(ship, x, y) {
     const coordinates = this.#getCoordinates(ship, x, y);
+    if (this.#isOutOfBounds(coordinates)) {
+      throw new Error("Out of bounds");
+    }
     if (this.#isCellsOccupied(coordinates)) {
       throw new Error("A ship is alread in place");
     }
-    coordinates.forEach((coor) => {
+    for (let i = 0; i < coordinates.length; i++) {
+      const coor = coordinates[i];
       this.grid[coor[0]][coor[1]].ship = ship;
-    });
+    }
   }
 
   #getCoordinates(ship, x, y) {
@@ -58,6 +62,21 @@ export class Gameboard {
       }
     }
     return coords;
+  }
+
+  #isOutOfBounds(coordinates) {
+    for (let i = 0; i < coordinates.length; i++) {
+      const coor = coordinates[i];
+      if (
+        coor[0] > BOARD_SIZE - 1 ||
+        coor[0] < 0 ||
+        coor[1] > BOARD_SIZE - 1 ||
+        coor[1] < 0
+      ) {
+        return true;
+      }
+    }
+    return false;
   }
 
   #isCellsOccupied(coordinates) {
@@ -94,6 +113,18 @@ export class Gameboard {
     for (let x = 0; x < this.grid.length; x++) {
       for (let y = 0; y < this.grid[x].length; y++) {
         if (!this.grid[x][y].destroyed) {
+          availableCells.push([x, y]);
+        }
+      }
+    }
+    return availableCells;
+  }
+
+  getUnoccupiedCells() {
+    const availableCells = [];
+    for (let x = 0; x < this.grid.length; x++) {
+      for (let y = 0; y < this.grid[x].length; y++) {
+        if (!this.grid[x][y].ship) {
           availableCells.push([x, y]);
         }
       }
