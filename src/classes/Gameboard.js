@@ -43,11 +43,18 @@ export class Gameboard {
     if (this.#isOutOfBounds(coordinates)) {
       throw new Error("Out of bounds");
     }
+
     if (this.#isCellsOccupied(coordinates)) {
       throw new Error("A ship is alread in place");
     }
+
     for (let i = 0; i < coordinates.length; i++) {
       const coor = coordinates[i];
+      if (i === 0) {
+        ship.tails.push(coor);
+      } else if (i === coordinates.length - 1) {
+        ship.tails.push(coor);
+      }
       this.grid[coor[0]][coor[1]].ship = ship;
     }
   }
@@ -61,6 +68,7 @@ export class Gameboard {
         coords.push([x + i, y]);
       }
     }
+
     return coords;
   }
 
