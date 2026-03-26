@@ -29,6 +29,7 @@ export class Player {
     try {
       targetPlayer.board.receiveAttack(x, y);
     } catch (error) {
+      // TODO: Error handling
       console.error(error.message);
     }
   }

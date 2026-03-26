@@ -6,6 +6,7 @@ export class Ship {
     this.length = length;
     this.hitsReceived = 0;
     this.orientation = HORIZONTAL;
+    this.tails = [];
   }
 
   hit() {
