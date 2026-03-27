@@ -10,6 +10,7 @@
   justify-content: center;
 }
 
+
 .scoreboard {
   display: flex;
   justify-content: space-between;
@@ -67,8 +68,8 @@
 }
 
 .ship-body-v {
-  border-top-color: transparent;
-  border-bottom-color: transparent;
+  border-top: transparent;
+  border-bottom: transparent;
 }
 
 .tail-front-h {

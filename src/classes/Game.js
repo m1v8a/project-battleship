@@ -20,7 +20,7 @@ export class Game {
     playerTwoGrid.style.gridTemplate = `repeat(${BOARD_SIZE}, 1fr) / repeat(${BOARD_SIZE}, 1fr)`;
 
     this.deployShipsRandomly(this.playerOne);
-    this.deployShipsRandomly(this.playerTwo);
+    this.deployShipsRandomly(this.playerTwo, { hidden: true });
     this.update();
 
     // CONTROLS
@@ -48,41 +48,46 @@ export class Game {
         div.className = "cell";
         div.dataset.x = x;
         div.dataset.y = y;
-        // div.textContent = `${x}-${y}`; // debug
 
         // update
         const cell = grid[x][y];
         if (cell.ship) {
-          div.classList.add("ship");
-
-          const [tail1, tail2] = cell.ship.tails;
-          console.log(cell.ship.length, tail1, tail2);
-          if (x === tail1[0] && y === tail1[1]) {
-            if (cell.ship.orientation === HORIZONTAL) {
-              div.classList.add("tail-front-h");
-            } else {
-              div.classList.add("tail-front-v");
-            }
-          } else if (x === tail2[0] && y === tail2[1]) {
-            if (cell.ship.orientation === HORIZONTAL) {
-              div.classList.add("tail-end-h");
-            } else {
-              div.classList.add("tail-end-v");
-            }
-          } else {
-            if (cell.ship.orientation === HORIZONTAL) {
-              div.classList.add("ship-body-h");
-            } else {
-              div.classList.add("ship-body-v");
-            }
+          if (!cell.ship.hidden) {
+            this.#setClasses(div, cell, x, y);
           }
         }
 
         if (cell.destroyed) {
+          if (cell.ship) {
+            this.#setClasses(div, cell, x, y);
+          }
           div.classList.add("destroyed");
         }
 
         gridEl.appendChild(div);
+      }
+    }
+  }
+
+  static #setClasses(div, cell, x, y) {
+    div.classList.add("ship");
+    // get the tails of the ship, and add classes depending on it's orientation
+    const [tail1, tail2] = cell.ship.tails;
+    if (cell.ship.orientation === HORIZONTAL) {
+      if (x === tail1[0] && y === tail1[1]) {
+        div.classList.add("tail-front-h");
+      } else if (x === tail2[0] && y === tail2[1]) {
+        div.classList.add("tail-end-h");
+      } else {
+        div.classList.add("ship-body-h");
+      }
+    } else {
+      if (x === tail1[0] && y === tail1[1]) {
+        div.classList.add("tail-front-v");
+      } else if (x === tail2[0] && y === tail2[1]) {
+        div.classList.add("tail-end-v");
+      } else {
+        div.classList.add("ship-body-v");
       }
     }
   }
@@ -112,7 +117,7 @@ export class Game {
     shipsTotalEl.textContent = shipsCount;
   }
 
-  static deployShipsRandomly(player) {
+  static deployShipsRandomly(player, opts = { hidden: false }) {
     player.board.getShips().forEach((ship) => {
       const unOccupiedCells = player.board.getUnoccupiedCells();
       const flip = Math.floor(Math.random() * 2);
@@ -125,7 +130,7 @@ export class Game {
           ship.toggleOrientation();
         }
         try {
-          player.board.deploy(ship, x, y);
+          player.board.deploy(ship, x, y, opts);
           deployError = false;
         } catch (error) {
           deployError = true;
