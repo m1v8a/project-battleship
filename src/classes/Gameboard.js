@@ -38,8 +38,11 @@ export class Gameboard {
     return ships;
   }
 
-  deploy(ship, x, y) {
+  deploy(ship, x, y, opts = { hidden: false }) {
     const coordinates = this.#getCoordinates(ship, x, y);
+    if (opts.hidden) {
+      ship.hide();
+    }
     if (this.#isOutOfBounds(coordinates)) {
       throw new Error("Out of bounds");
     }

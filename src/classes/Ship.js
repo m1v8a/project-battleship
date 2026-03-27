@@ -7,6 +7,7 @@ export class Ship {
     this.hitsReceived = 0;
     this.orientation = HORIZONTAL;
     this.tails = [];
+    this.hidden = false;
   }
 
   hit() {
@@ -15,6 +16,14 @@ export class Ship {
 
   toggleOrientation() {
     this.orientation = this.orientation === HORIZONTAL ? VERTICAL : HORIZONTAL;
+  }
+
+  show() {
+    this.hidden = false;
+  }
+
+  hide() {
+    this.hidden = true;
   }
 
   isSunk() {
