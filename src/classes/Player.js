@@ -4,16 +4,9 @@ export class Player {
   constructor(name, isComputer = false) {
     this.name = name;
     this.board = new Gameboard();
-    if (isComputer) {
-      this.computerAttack = (targetPlayer) => {
-        this.#computerAttack(targetPlayer);
-      };
-    } else {
-      this.attack = (targetPlayer, x, y) => {
-        this.#attack(targetPlayer, x, y);
-      };
-    }
+    this.isComputer = isComputer;
   }
+
   get hits() {
     return this.board.state.hits;
   }
@@ -25,12 +18,11 @@ export class Player {
     return this.board.state.sunkenShips;
   }
 
-  #attack(targetPlayer, x, y) {
-    try {
+  attack(targetPlayer, x, y) {
+    if (this.isComputer) {
+      this.#computerAttack(targetPlayer);
+    } else {
       targetPlayer.board.receiveAttack(x, y);
-    } catch (error) {
-      // TODO: Error handling
-      console.error(error.message);
     }
   }
 
@@ -38,7 +30,6 @@ export class Player {
     const undestroyedCells = targetPlayer.board.getUndestroyedCells();
     const [randX, randY] =
       undestroyedCells[Math.floor(Math.random() * undestroyedCells.length)];
-
-    this.#attack(targetPlayer, randX, randY);
+    targetPlayer.board.receiveAttack(randX, randY);
   }
 }
