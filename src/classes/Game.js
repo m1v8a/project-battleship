@@ -43,7 +43,7 @@ export class Game {
         this.playerTwo.attack(this.playerOne);
         this.update();
       } catch (error) {
-        console.error(error.message);
+        console.error(error);
       }
     });
   }

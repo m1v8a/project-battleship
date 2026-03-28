@@ -4,10 +4,12 @@ export const BOARD_SIZE = 12;
 const SHIPS_LENGTHS = [2, 2, 3, 3, 4, 5];
 
 export class Gameboard {
+  #isLastAttackReceivedHit;
   constructor() {
     this.grid = this.#generateGrid(BOARD_SIZE);
     this.state = { hits: 0, misses: 0, sunkenShips: 0 };
     this.ships = this.#generateShips();
+    this.#isLastAttackReceivedHit = null;
   }
 
   #generateGrid(size) {
@@ -101,6 +103,11 @@ export class Gameboard {
     return isOccupied;
   }
 
+  isCellDestroyed(x, y) {
+    console.log(x, y);
+    return this.grid[x][y].destroyed;
+  }
+
   receiveAttack(x, y) {
     const cell = this.grid[x][y];
     if (cell.destroyed) {
@@ -110,13 +117,19 @@ export class Gameboard {
     if (cell.ship !== null) {
       cell.ship.hit(); // hit the ship
       this.#attackHits();
+      this.#isLastAttackReceivedHit = true;
 
       if (cell.ship.isSunk()) {
         this.state.sunkenShips += 1;
       }
     } else {
       this.#attackMisses();
+      this.#isLastAttackReceivedHit = false;
     }
+  }
+
+  isLastAttackReceivedHit() {
+    return this.#isLastAttackReceivedHit;
   }
 
   getUndestroyedCells() {
