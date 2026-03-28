@@ -8,7 +8,7 @@ export class Game {
 
   static init() {
     this.playerOne = new Player("Player One");
-    this.playerTwo = new Player("Player Two");
+    this.playerTwo = new Player("Player Two", true);
 
     this.playerOne.containerEl = document.querySelector("#player-one");
     this.playerTwo.containerEl = document.querySelector("#player-two");
@@ -31,9 +31,20 @@ export class Game {
       const x = target.dataset.x;
       const y = target.dataset.y;
 
-      this.playerOne.attack(this.playerTwo, x, y);
+      try {
+        this.playerOne.attack(this.playerTwo, x, y);
+        this.update();
+      } catch (error) {
+        console.error(error.message);
+        return;
+      }
 
-      this.update();
+      try {
+        this.playerTwo.attack(this.playerOne);
+        this.update();
+      } catch (error) {
+        console.error(error.message);
+      }
     });
   }
 
