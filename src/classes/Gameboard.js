@@ -32,6 +32,10 @@ export class Gameboard {
     return this.ships;
   }
 
+  getCell(x, y) {
+    return this.grid[x][y];
+  }
+
   #generateShips() {
     const ships = [];
     for (let i = 0; i < SHIPS_LENGTHS.length; i++) {

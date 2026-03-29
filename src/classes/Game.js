@@ -59,6 +59,7 @@ export class Game {
         div.className = "cell";
         div.dataset.x = x;
         div.dataset.y = y;
+        div.textContent = `${x}-${y}`;
 
         // update
         const cell = grid[x][y];
