@@ -8,11 +8,14 @@ export class Game {
   static isGameOver = false;
   static elements = {
     startButton: document.querySelector("#start-button"),
+    playAgainButton: document.querySelector("#play-again-button"),
+    winnerName: document.querySelector("#winner-name"),
   };
 
   static screens = [
     { name: "menu", element: document.querySelector(".menu") },
     { name: "game-window", element: document.querySelector(".game-window") },
+    { name: "game-over", element: document.querySelector(".game-over") },
   ];
 
   static init() {
@@ -21,7 +24,6 @@ export class Game {
     this.elements.startButton.addEventListener("click", () => {
       const nameInput = document.querySelector(".name-input");
       if (!nameInput.value) return;
-      this.switchScreen("game-window");
 
       this.playerOne = new Player(nameInput.value);
       this.playerTwo = new Player("Player Two", true);
@@ -39,7 +41,21 @@ export class Game {
       this.deployShipsRandomly(this.playerTwo, { hidden: true });
       this.update();
 
+      this.switchScreen("game-window");
       this.initBoard();
+    });
+
+    this.elements.playAgainButton.addEventListener("click", () => {
+      this.playerOne.board.reset();
+      this.playerTwo.board.reset();
+
+      this.deployShipsRandomly(this.playerOne);
+      this.deployShipsRandomly(this.playerTwo, { hidden: true });
+      this.update();
+
+      this.isGameOver = false;
+
+      this.switchScreen("game-window");
     });
   }
 
@@ -71,9 +87,13 @@ export class Game {
       if (this.playerOne.board.isDefeated()) {
         this.isGameOver = true;
         console.log("You lost");
+        this.elements.winnerName.textContent = this.playerTwo.name;
+        this.switchScreen("game-over");
       } else if (this.playerTwo.board.isDefeated()) {
-        console.log("You Won");
         this.isGameOver = true;
+        console.log("You Won");
+        this.elements.winnerName.textContent = this.playerOne.name;
+        this.switchScreen("game-over");
       }
     });
   }
@@ -89,7 +109,6 @@ export class Game {
         div.className = "cell";
         div.dataset.x = x;
         div.dataset.y = y;
-        div.textContent = `${x}-${y}`;
 
         // update
         const cell = grid[x][y];

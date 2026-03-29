@@ -12,6 +12,13 @@ export class Gameboard {
     this.#isLastAttackReceivedHit = null;
   }
 
+  reset() {
+    this.grid = this.#generateGrid(BOARD_SIZE);
+    this.state = { hits: 0, misses: 0, sunkenShips: 0 };
+    this.ships = this.#generateShips();
+    this.#isLastAttackReceivedHit = null;
+  }
+
   #generateGrid(size) {
     const grid = [];
     for (let x = 0; x < size; x++) {

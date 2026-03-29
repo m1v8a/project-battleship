@@ -27,7 +27,8 @@ input {
   display: none !important;
 }
 
-.menu {
+.menu,
+.game-over {
   display: flex;
   flex-direction: column;
   gap: 1rem;
