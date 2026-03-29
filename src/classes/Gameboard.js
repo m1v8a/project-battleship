@@ -108,7 +108,6 @@ export class Gameboard {
   }
 
   isCellDestroyed(x, y) {
-    console.log(x, y);
     return this.grid[x][y].destroyed;
   }
 
@@ -158,6 +157,14 @@ export class Gameboard {
       }
     }
     return availableCells;
+  }
+
+  isDefeated() {
+    for (let i = 0; i < this.ships.length; i++) {
+      const ship = this.ships[i];
+      if (!ship.isSunk()) return false;
+    }
+    return true;
   }
 
   #attackHits() {

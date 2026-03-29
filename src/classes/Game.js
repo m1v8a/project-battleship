@@ -5,26 +5,47 @@ import { HORIZONTAL } from "./Ship.js";
 export class Game {
   static playerOne = null;
   static playerTwo = null;
+  static isGameOver = false;
+  static elements = {
+    startButton: document.querySelector("#start-button"),
+  };
+
+  static screens = [
+    { name: "menu", element: document.querySelector(".menu") },
+    { name: "game-window", element: document.querySelector(".game-window") },
+  ];
 
   static init() {
-    this.playerOne = new Player("Player One");
-    this.playerTwo = new Player("Player Two", true);
-
-    this.playerOne.containerEl = document.querySelector("#player-one");
-    this.playerTwo.containerEl = document.querySelector("#player-two");
-
-    const playerOneGrid = this.playerOne.containerEl.querySelector(".grid");
-    const playerTwoGrid = this.playerTwo.containerEl.querySelector(".grid");
-
-    playerOneGrid.style.gridTemplate = `repeat(${BOARD_SIZE}, 1fr) / repeat(${BOARD_SIZE}, 1fr)`;
-    playerTwoGrid.style.gridTemplate = `repeat(${BOARD_SIZE}, 1fr) / repeat(${BOARD_SIZE}, 1fr)`;
-
-    this.deployShipsRandomly(this.playerOne);
-    this.deployShipsRandomly(this.playerTwo, { hidden: true });
-    this.update();
-
     // CONTROLS
-    playerTwoGrid.addEventListener("click", (e) => {
+
+    this.elements.startButton.addEventListener("click", () => {
+      const nameInput = document.querySelector(".name-input");
+      if (!nameInput.value) return;
+      this.switchScreen("game-window");
+
+      this.playerOne = new Player(nameInput.value);
+      this.playerTwo = new Player("Player Two", true);
+
+      this.playerOne.containerEl = document.querySelector("#player-one");
+      this.playerTwo.containerEl = document.querySelector("#player-two");
+
+      this.playerOne.gridEl = this.playerOne.containerEl.querySelector(".grid");
+      this.playerTwo.gridEl = this.playerTwo.containerEl.querySelector(".grid");
+
+      this.playerOne.gridEl.style.gridTemplate = `repeat(${BOARD_SIZE}, 1fr) / repeat(${BOARD_SIZE}, 1fr)`;
+      this.playerTwo.gridEl.style.gridTemplate = `repeat(${BOARD_SIZE}, 1fr) / repeat(${BOARD_SIZE}, 1fr)`;
+
+      this.deployShipsRandomly(this.playerOne);
+      this.deployShipsRandomly(this.playerTwo, { hidden: true });
+      this.update();
+
+      this.initBoard();
+    });
+  }
+
+  static initBoard() {
+    this.playerTwo.gridEl.addEventListener("click", (e) => {
+      if (this.isGameOver) return;
       const target = e.target;
       if (!target.classList.contains("cell")) return;
       // attack the cell
@@ -44,6 +65,15 @@ export class Game {
         this.update();
       } catch (error) {
         console.error(error);
+        return;
+      }
+
+      if (this.playerOne.board.isDefeated()) {
+        this.isGameOver = true;
+        console.log("You lost");
+      } else if (this.playerTwo.board.isDefeated()) {
+        console.log("You Won");
+        this.isGameOver = true;
       }
     });
   }
@@ -147,6 +177,16 @@ export class Game {
         } catch (error) {
           deployError = true;
         }
+      }
+    });
+  }
+
+  static switchScreen(screen) {
+    this.screens.forEach((s) => {
+      if (s.name === screen) {
+        s.element.classList.remove("hidden");
+      } else {
+        s.element.classList.add("hidden");
       }
     });
   }

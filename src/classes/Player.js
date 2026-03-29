@@ -139,7 +139,5 @@ export class Player {
         this.nextTarget = { coor: [], dir: null };
       }
     }
-
-    console.log(this.nextTarget.coor);
   }
 }
